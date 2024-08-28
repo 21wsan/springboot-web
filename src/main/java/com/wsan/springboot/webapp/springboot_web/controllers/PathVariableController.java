@@ -1,6 +1,7 @@
 package com.wsan.springboot.webapp.springboot_web.controllers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -21,14 +22,27 @@ public class PathVariableController {
     @Value("${config.username}")
     private String username;
 
-    //@Value("${config.message}")
-    //private String message;
-
     @Value("${config.listOfValues}")
-    private String[] listOfValues;
-
+    private List<String> listOfValues;
+    
     @Value("${config.code}")
     private Integer code;
+    
+    @Value("#{'${config.listOfValues}'.toUpperCase().split(',')}")
+    private List<String> valueList;
+
+    @Value("#{'${config.listOfValues}'.toUpperCase()}")
+    private String valueString;
+
+    @Value("#{${config.valuesMap}}")
+    private Map<String, Object> valuesMap;
+    
+    @Value("#{${config.valuesMap}.product}")
+    private String product;
+    
+    @Value("#{${config.valuesMap}.price}")
+    private Long price;
+
 
     @GetMapping("/baz/{message}")
     public ParamDto baz(@PathVariable String message) {
@@ -61,6 +75,11 @@ public class PathVariableController {
         json.put("message", message);
         json.put("code", code);
         json.put("listOfValues", listOfValues);
+        json.put("valueString", valueString);
+        json.put("valueList", valueList);
+        json.put("valuesMap", valuesMap);
+        json.put("product", product);
+        json.put("price", price);
         return json;
     }
 }
